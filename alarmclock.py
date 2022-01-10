@@ -13,15 +13,15 @@ def alarm(set_alarm_timer):
         print(now)
         if now == set_alarm_timer:
             print("Time to Wake up")
-        winsound.PlaySound("sound.wav",winsound.SND_ASYNC)
+        winsound.PlaySound("sound.wav",winsound.SND_NOSTOP)
         break
 
 def actual_time():
-    set_alarm_timer = f"{hour.get()}:{min.get()}:{sec.get()}"
+    set_alarm_timer = f"{hour.get()}:{mins.get()}:{sec.get()}"
     alarm(set_alarm_timer)
-    clock = Tk()
+clock = Tk()
 
-clock.title("DataFlair Alarm Clock")
+clock.title("Alarm Clock")
 clock.geometry("400x200")
 time_format=Label(clock, text= "Enter time in 24 hour format!", fg="red",bg="black",font="Arial").place(x=60,y=120)
 addTime = Label(clock,text = "Hour  Min   Sec",font=60).place(x = 110)
@@ -29,12 +29,12 @@ setYourAlarm = Label(clock,text = "When to wake you up",fg="blue",relief = "soli
 
 # The Variables we require to set the alarm(initialization):
 hour = StringVar()
-min = StringVar()
+mins = StringVar()
 sec = StringVar()
 
 #Time required to set the alarm clock:
 hourTime= Entry(clock,textvariable = hour,bg = "pink",width = 15).place(x=110,y=30)
-minTime= Entry(clock,textvariable = min,bg = "pink",width = 15).place(x=150,y=30)
+minTime= Entry(clock,textvariable = mins,bg = "pink",width = 15).place(x=150,y=30)
 secTime = Entry(clock,textvariable = sec,bg = "pink",width = 15).place(x=200,y=30)
 
 #To take the time input by user:
