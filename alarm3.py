@@ -44,7 +44,7 @@ def alarm():
 	e2.place(x=30, y=130)
 	begin=Button(window, text="Start", relief=GROOVE)
 	begin.place(x=200, y=150)
-	begin.bind("<Button-1>,alarm_begin)
+	begin.bind("<Button-1>",alarm_begin)
 
 def alarm_begin(event):
 	global e1,e2
