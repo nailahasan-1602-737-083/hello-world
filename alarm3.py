@@ -34,11 +34,11 @@ def alarm():
 	global e1,e2
 	window=Toplevel()
 	window.geometry("350x200")
-	hours=Label(window, text="At what hour do you want it to ring?\nPlease enter in military time.",font = ('Helvetica', 12 , "bold"))
+	hours=Label(window, text="At what hour do you want it to ring?\nPlease enter in military time.",font = ('Helvetica', 9 , "bold"))
 	hours.place(x=30, y=20)
 	e1 = Entry(window, relief=GROOVE)
 	e1.place(x=30, y=70)
-	minutes=Label(window, text="At what minute do you want it to ring?\nPlease enter in military time.",font = ('Helvetica', 12 , "bold"))
+	minutes=Label(window, text="At what minute do you want it to ring?\nPlease enter in military time.",font = ('Helvetica', 9 , "bold"))
 	minutes.place(x=30, y=100)
 	e2 = Entry(window, relief=GROOVE)
 	e2.place(x=30, y=130)
@@ -66,7 +66,7 @@ text.place(x=80, y=20)
 
 btn1=Button(root, image=img1, borderwidth=0, command=lambda: tick("btn_12")).place(anchor=SW,x=0, y=200)
 btn2=Button(root, image=img1, borderwidth=0, command=lambda: tick("btn_24")).place(anchor=SW,x=0, y=300)
-btn1=Button(root, image=img1, borderwidth=0, command=alarm).place(anchor=SW,x=0, y=400)
+btn3=Button(root, image=img1, borderwidth=0, command=alarm).place(anchor=SW,x=0, y=400)
 
 photo=ImageTk.PhotoImage(Image.open("clock.png"))
 
