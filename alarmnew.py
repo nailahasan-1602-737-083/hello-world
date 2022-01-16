@@ -154,6 +154,8 @@ def alarmset(event):
                 b1=Button(win,text="Yes",command=on_closing, width=10)
                 b1.grid(row=1, column=1)
                 mainloop()
+	    else:
+		pass
 
                 # Add Labels, Frame, Button, Optionmenus
 
