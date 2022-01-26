@@ -1,6 +1,7 @@
 from inspect import FrameInfo
 import sys
-import vlc
+import os
+from playsound import playsound
 from threading import *
 import threading
 from tkinter import *
@@ -8,12 +9,23 @@ from tkinter import messagebox
 import datetime
 import time
 import winsound
-from playsound import playsound
 from PIL import ImageTk, Image
+import pygame
+from pygame import mixer
+import random
+
+#riddles dictioray with question and answers.
+riddle = {'Spaghetto is the singular form of the word spaghetti':'yes', 
+          'Polar bears can only live in the Arctic region, not in the Antarctic' : 'no',
+          'Emus can not fly.': 'yes',
+          'The Mona Liza was stolen from the Louvre in 1911': 'yes'}
+
 root = Tk()
-# Set geometry
-root.geometry("600x500")
-root.title("DIGITAL CLOCK")
+
+pygame.init()
+mixer.init()
+mixer.music.load("alarm-clock.wav")
+
 
 def tick(val):
 	global clock
@@ -26,14 +38,13 @@ def tick(val):
 	elif val=="btn_12":
 		time12()
 	elif val=="btn_al":
-		alarm()
+		alarm(window)
 
 def time24():
 	global clock
 	ts=time.strftime("%H:%M:%S")
 	clock["text"]=ts
 	clock.after(1000, time24)
-    
 
 def time12():
 	global clock
@@ -57,29 +68,24 @@ def Threading24():
         t3=Thread(target=time24)
         t3.start()
 
-
 def on_closing():
-    p = vlc.MediaPlayer("alarm-clock.wav")
-    res=messagebox.askquestion("askquestion",'Spaghetto is the singular form of the word spaghetti.')
-    if res == 'yes':
-        res1=messagebox.askquestion('askquestion', 'Polar bears can only live in the Arctic region, not in the Antarctic. ')
-        if res1=='yes':
-            messagebox.showinfo('Response', 'you exit the alarm')
-        
-        else:
-           
-            p.play()
-            on_closing()
+    
+    question, answer = random.choice(list(riddle.items()))
+
+    res=messagebox.askquestion("askquestion", question)
+    if res.lower() == answer.lower():
+        mixer.music.stop()
+        #root.destroy()
+        startProcess()      
     else:
-        
-        p.play()
-        on_closing()
+        res2 = messagebox.showinfo('stop', 'Do you want to stop alarm?')
+        if res2=='ok':
+            on_closing()
 
 
-
-def alarm():
+def alarm(window):
     global hour,minute,second
-    window=Toplevel(root)
+    #window=Toplevel(root)
     window.geometry("350x300")
     window.title("ALARM CLOCK")
     Label(window,text="Alarm Clock",font=("Helvetica 20 bold"),fg="red", relief=SUNKEN).pack(pady=10)
@@ -88,7 +94,7 @@ def alarm():
     frame = Frame(window)
     frame.pack()
     hour = StringVar(window)
-    hours = ('00', '01', '02', '03', '04', '05', '06', '07','08', '09', '10', '11', '12', '13', '14', '15','16', '17', '18', '19', '20', '21', '22', '23', '24' )
+    hours = ('00', '01', '02', '03', '04', '05', '06', '07','08', '09', '10', '11', '12', '13', '14', '15','16', '17', '18', '19', '20', '21', '22', '23')
     hour.set(hours[0])
     hrs = OptionMenu(frame, hour, *hours)
     hrs.pack(side=LEFT)
@@ -119,23 +125,17 @@ def alarm():
     secs = OptionMenu(frame, second, *seconds)
     secs.pack(side=LEFT)
 
-    begin=Button(window,text="Set Alarm",font=("Helvetica 15"),command=alarmset)
+    begin=Button(window,text="Set Alarm",font=("Helvetica 15"),command=callAlarm)
     begin.pack(pady=20)
-    begin.bind("<Button-1>",alarmset)
-    
-    
+    #begin.bind("<Button-1>",callalarm)
 
-
-def alarmset(event):
+def callAlarm():
     # Infinite Loop
     global hour,minute,second
+    set_alarm_time = f"{hour.get()}:{minute.get()}:{second.get()}"        
     while(1):
-       
-        set_alarm_time = f"{hour.get()}:{minute.get()}:{second.get()}"
-        
         # Wait for one seconds
         time.sleep(1)
-
         # Get current time
         current_time = datetime.datetime.now().strftime("%H:%M:%S")
         print(current_time,set_alarm_time)
@@ -143,36 +143,32 @@ def alarmset(event):
         # Check whether set alarm is equal to current time or not
         if current_time == set_alarm_time:
             print("Time to Wake up")
-                # Playing sound
-            p = vlc.MediaPlayer("alarm-clock.wav")
-            p.play()
-            res2 = messagebox.askquestion('askquestion', 'Do you want to stop alarm?')
-            if res2=='yes':
-                win = Toplevel(root)
-                win.title("STOPPING ALARM")
-                win.geometry("230x100")
-                b1=Button(win,text="Yes",command=on_closing, width=10)
-                b1.grid(row=1, column=1)
-                mainloop()
+            mixer.music.play(-1)
+            res2 = messagebox.showinfo('stop', 'Do you want to stop alarm?')
+            if res2=='ok':
+                on_closing()
+                break
 
-                # Add Labels, Frame, Button, Optionmenus
+def startProcess():   
+    # Set geometry
+    root.geometry("600x500")
+    root.title("DIGITAL CLOCK")
+    img1=PhotoImage(file="12.png")
+    img2=PhotoImage(file="24.png")
+    img3=PhotoImage(file="alarm.png")
+    text=Label(root,text="Which clock do you want to try?",font = ('Helvetica', 20 , "bold"), fg="dark red")
+    text.place(x=80, y=20)
 
-        
-img1=PhotoImage(file="12.png")
-img2=PhotoImage(file="24.png")
-img3=PhotoImage(file="alarm.png")
-text=Label(root,text="Which clock do you want to try?",font = ('Helvetica', 20 , "bold"), fg="dark red")
-text.place(x=80, y=20)
+    btn1=Button(root, image=img1, borderwidth=0, command=Threading12)
+    btn1.place(anchor=SW,x=0, y=200)
+    btn2=Button(root, image=img2, borderwidth=0, command=Threading24)
+    btn2.place(anchor=SW,x=0, y=300)
+    btn3=Button(root, image=img3, borderwidth=0, command= Threading)
+    btn3.place(anchor=SW,x=0, y=400)
 
-btn1=Button(root, image=img1, borderwidth=0, command=Threading12)
-btn1.place(anchor=SW,x=0, y=200)
-btn2=Button(root, image=img2, borderwidth=0, command=Threading24)
-btn2.place(anchor=SW,x=0, y=300)
-btn3=Button(root, image=img3, borderwidth=0, command= Threading)
-btn3.place(anchor=SW,x=0, y=400)
+    photo=ImageTk.PhotoImage(Image.open("alarmclock.png"))
 
-photo=ImageTk.PhotoImage(Image.open("clock.png"))
-
-img_label=Label(root,image=photo)
-img_label.place(x=230, y=150)
-mainloop()
+    img_label=Label(root,image=photo)
+    img_label.place(x=300, y=120)
+    mainloop()
+startProcess()
