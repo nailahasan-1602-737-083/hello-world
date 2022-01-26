@@ -18,7 +18,17 @@ import random
 riddle = {'Spaghetto is the singular form of the word spaghetti':'yes', 
           'Polar bears can only live in the Arctic region, not in the Antarctic' : 'no',
           'Emus can not fly.': 'yes',
-          'The Mona Liza was stolen from the Louvre in 1911': 'yes'}
+          'The Mona Liza was stolen from the Louvre in 1911': 'yes',
+	 'In the animation film “Finding Nemo,” the main protagonist is a pufferfish.' : 'no',
+          'In a regular deck of cards, all kings have a mustache.' : 'no',
+          'Michael Jackson and Nicolas Cage both married the same lady.' : 'yes',
+          'The Philippines is an archipelagic country that has the most number of islands.' : 'no',
+          'Mount Kilimanjaro is the highest mountain in the world?' : 'no',
+          'A group of swans is known as a bevy? ' :'yes' ,
+          'Glastonbury had been due to celebrate its 50th anniversary in June before the festival was cancelled?' : 'yes',
+          ' Nepal is the only country in the world which does not have a rectangular flag?' : 'yes',
+          ' First ODI (Cricket) in India was played in Ahemadabad.' : 'yes',
+          'The Headquarters of the Southern Naval Command of the India Navy is located at Thiruvananthapuram.' : 'no'}
 
 root = Tk()
 
